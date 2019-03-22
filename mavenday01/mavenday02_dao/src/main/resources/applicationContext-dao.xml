@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			    http://www.springframework.org/schema/beans/spring-beans.xsd
+			    http://www.springframework.org/schema/context
+			    http://www.springframework.org/schema/context/spring-context.xsd
+			    http://www.springframework.org/schema/aop
+			    http://www.springframework.org/schema/aop/spring-aop.xsd
+			    http://www.springframework.org/schema/tx
+			    http://www.springframework.org/schema/tx/spring-tx.xsd
+			    http://www.springframework.org/schema/mvc
+			    http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--dao层配置开始-->
+
+    <!--配置一个数据源-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql:///maven"/>
+        <property name="user" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+
+    <!--创建一个生产SqlSeesion对象的工厂对象-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--引入数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--给pojo对象起别名【此处注解开发可以省略】-->
+        <property name="typeAliasesPackage" value="com.itheima.domain"/>
+    </bean>
+
+    <!--我们对所有dao接口包下的接口进行扫描，使用SqlSeesion对象给其创建代理对象，并且放入到容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.itheima.dao"/>
+    </bean>
+
+    <!--dao层配置结束-->
+
+
+
+</beans>
